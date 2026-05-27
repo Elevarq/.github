@@ -96,6 +96,13 @@ references and commands.
   repo's `.github/dependabot.yml` where present).
 - Dependency manifests are locked (`go.sum`, etc.).
 
+## Organization controls
+
+- Two-factor authentication is **required for all members** of the
+  Elevarq GitHub organization.
+- Repositories are created with secret scanning, push protection, and
+  Dependabot security updates enabled by default.
+
 ## Scope
 
 This summary covers the public projects. Per-repository policies provide
