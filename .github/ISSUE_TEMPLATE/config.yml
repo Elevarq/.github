@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/Elevarq/.github/blob/main/SECURITY.md
+    about: Do not file public issues for vulnerabilities. Email security@elevarq.com.
+  - name: Elevarq website
+    url: https://elevarq.com
+    about: Product information and contact.
