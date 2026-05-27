@@ -8,30 +8,21 @@ Website: https://elevarq.com
 
 ## Open core
 
-Elevarq is built as an open core. The parts that collect data, package
-infrastructure, and run inside your environment are open source. The
-commercial product is the diagnostic reasoning layer that sits on top of
-them.
-
-The split is deliberate: collection and packaging are infrastructure you
-should be able to read, run, and audit yourself; the analysis and
-workflow layer is where Elevarq's commercial work lives.
+Elevarq is built as an open core. The infrastructure we package and
+distribute is open source; the commercial product is the diagnostic
+reasoning layer that sits on top of it.
 
 ### Open source
 
-- **Arq-Signals** — read-only PostgreSQL telemetry collector designed for
-  operational analysis and air-gapped environments. No outbound calls,
-  no analysis, no AI — it gathers evidence and nothing else.
 - **pgAgroal** — production-ready container distribution of pgagroal, the
   high-performance PostgreSQL connection pooler. Hardened image and Helm
   chart. BSD-3 licensed.
 
 ### Commercial
 
-- **Arq** — diagnostic reasoning over the signals: correlating
-  operational evidence to explain why a PostgreSQL system degrades over
-  time and what to do next. Arq consumes the open collectors; it does not
-  replace them.
+- **Arq** — diagnostic reasoning over PostgreSQL operational signals:
+  correlating evidence to explain why a system degrades over time and
+  what to do next.
 
 ## Engineering Approach
 
@@ -45,10 +36,9 @@ Our projects emphasize:
 ## Security and supply chain
 
 Release artifacts are built only in CI and published with Cosign keyless
-signatures, an SBOM, and SLSA build provenance. Arq-Signals is read-only
-by design, makes no outbound calls, and runs air-gapped; container images
-run non-root with least-privilege defaults. Static analysis, secret
-scanning, and dependency automation run continuously.
+signatures, an SBOM, and SLSA build provenance. Container images run
+non-root with least-privilege defaults. Static analysis, secret scanning,
+and dependency automation run continuously.
 
 These practices are designed for auditability and aligned with SOC 2 and
 ISO 27001 controls — we do not claim certification. Details and
