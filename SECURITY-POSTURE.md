@@ -14,49 +14,34 @@ For vulnerability reporting, see [SECURITY.md](SECURITY.md)
 
 ## Build and release integrity
 
-Applies to **Arq-Signals** and **pgAgroal**.
+Applies to **pgAgroal**.
 
 - **CI-only builds.** Release artifacts are built by GitHub Actions from
   committed source, not from a developer machine.
 - **Cosign keyless signatures.** Published container images are signed
   with [cosign](https://github.com/sigstore/cosign) using GitHub OIDC and
   the Sigstore public-good infrastructure — no long-lived signing keys.
-- **SBOM.** Builds produce an SPDX SBOM. Arq-Signals also attaches
-  `sbom.spdx.json` to its GitHub releases alongside `SHA256SUMS`.
+- **SBOM.** Builds produce an SPDX SBOM attached as an OCI attestation.
 - **SLSA provenance.** Image builds attach build provenance
   (`provenance: mode=max`) as an OCI attestation.
 
 ### Verifying a release
 
-Container image signature (keyless):
+The pgAgroal image is published to Docker Hub and can be verified
+directly:
 
 ```sh
-cosign verify <image>@<digest> \
+cosign verify docker.io/elevarq/pgagroal:<version> \
   --certificate-identity-regexp 'https://github.com/Elevarq/.*' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
+
+cosign verify-attestation --type spdxjson      docker.io/elevarq/pgagroal:<version>
+cosign verify-attestation --type slsaprovenance docker.io/elevarq/pgagroal:<version>
 ```
 
-SBOM / provenance attestations:
-
-```sh
-cosign verify-attestation --type spdxjson      <image>@<digest>   # SBOM
-cosign verify-attestation --type slsaprovenance <image>@<digest>  # provenance
-```
-
-Each repository's release documentation carries the exact image
-references and commands.
+The repository's release notes carry the exact image reference and digest.
 
 ## Static analysis and scanning
-
-**Arq-Signals** (Go) runs, in CI and on a nightly schedule:
-
-- CodeQL
-- `govulncheck` (Go vulnerability database)
-- Trivy (filesystem) and Grype (against the generated SBOM)
-- Semgrep and OSV-Scanner
-- Gitleaks secret scanning (full-history nightly; staged + current-commit
-  on push)
-- OpenSSF Scorecard
 
 **pgAgroal** (container / Helm) runs in CI:
 
@@ -66,18 +51,6 @@ references and commands.
 - `helm lint`
 
 ## Runtime hardening
-
-**Arq-Signals**
-
-- Read-only PostgreSQL access enforced by three independent layers:
-  startup SQL linting (DDL/DML aborts the process), a session set to
-  `default_transaction_read_only=on`, and per-query `BEGIN ... READ ONLY`.
-- No outbound network calls except to the PostgreSQL targets it collects
-  from — no telemetry, no analytics, no AI provider calls.
-- Runs air-gapped. Credentials are read at connection time and never
-  written to disk or included in exports.
-- Container runtime is non-root with no shell or compilers in the
-  production image.
 
 **pgAgroal**
 
@@ -94,7 +67,7 @@ references and commands.
   release artifacts.
 - Dependabot keeps GitHub Actions and dependencies current (see each
   repo's `.github/dependabot.yml` where present).
-- Dependency manifests are locked (`go.sum`, etc.).
+- Dependency manifests are locked.
 
 ## Organization controls
 
@@ -108,5 +81,4 @@ references and commands.
 This summary covers the public projects. Per-repository policies provide
 the authoritative detail:
 
-- [Arq-Signals SECURITY.md](https://github.com/Elevarq/Arq-Signals/blob/main/SECURITY.md)
 - [pgAgroal SECURITY.md](https://github.com/Elevarq/pgAgroal/blob/main/SECURITY.md)
