@@ -6,14 +6,32 @@ Elevarq builds operational tooling focused on PostgreSQL diagnostics, reliabilit
 
 Website: https://elevarq.com
 
-## Open Source
+## Open core
 
-- **Arq-Signals** — read-only PostgreSQL telemetry collector designed for operational analysis and air-gapped environments.
-- **pgAgroal** — production-ready container distribution of pgagroal, the high-performance PostgreSQL connection pooler. BSD-3 licensed.
+Elevarq is built as an open core. The parts that collect data, package
+infrastructure, and run inside your environment are open source. The
+commercial product is the diagnostic reasoning layer that sits on top of
+them.
 
-## Commercial
+The split is deliberate: collection and packaging are infrastructure you
+should be able to read, run, and audit yourself; the analysis and
+workflow layer is where Elevarq's commercial work lives.
 
-**Arq** is our commercial PostgreSQL intelligence platform focused on diagnostic reasoning over operational signals — helping engineering teams understand why systems degrade over time and what to do next.
+### Open source
+
+- **Arq-Signals** — read-only PostgreSQL telemetry collector designed for
+  operational analysis and air-gapped environments. No outbound calls,
+  no analysis, no AI — it gathers evidence and nothing else.
+- **pgAgroal** — production-ready container distribution of pgagroal, the
+  high-performance PostgreSQL connection pooler. Hardened image and Helm
+  chart. BSD-3 licensed.
+
+### Commercial
+
+- **Arq** — diagnostic reasoning over the signals: correlating
+  operational evidence to explain why a PostgreSQL system degrades over
+  time and what to do next. Arq consumes the open collectors; it does not
+  replace them.
 
 ## Engineering Approach
 
