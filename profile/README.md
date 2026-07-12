@@ -20,9 +20,9 @@ reasoning layer that sits on top of it.
 
 ### Commercial
 
-- **Arq** — diagnostic reasoning over PostgreSQL operational signals:
-  correlating evidence to explain why a system degrades over time and
-  what to do next.
+- **Elevarq Analyzer** — diagnostic reasoning over PostgreSQL operational
+  signals: correlating evidence to explain why a system degrades over
+  time and what to do next.
 
 ## Engineering Approach
 
